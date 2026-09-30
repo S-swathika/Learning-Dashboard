@@ -1,0 +1,100 @@
+<div class="app-layout">
+  
+  <!-- Header Navbar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <div class="brand-logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">RapL <span class="brand-tag">Learning</span></h1>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-reset-data" (click)="onResetData()" title="Reset to initial seed data">
+          Reset Demo Data
+        </button>
+
+        <button class="btn-add-course" (click)="showAddCourseModal.set(true)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Add Course
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    
+    <!-- Title Header -->
+    <div class="page-header">
+      <h2 class="page-title">Learning Dashboard</h2>
+      <p class="page-subtitle">Track course progression, review learning goals, and explore available training content.</p>
+    </div>
+
+    <!-- 1. Stats Summary Cards Component -->
+    <app-dashboard-stats 
+      [selectedFilter]="selectedFilter()"
+      (filterChange)="onFilterChangedFromStats($event)"
+    ></app-dashboard-stats>
+
+    <!-- 2. & 3. Course List & Details Filter Component -->
+    <app-course-list
+      [externalStatusFilter]="selectedFilter()"
+      (selectCourse)="onSelectCourse($event)"
+    ></app-course-list>
+
+  </main>
+
+  <!-- Course Details Modal -->
+  @if (selectedCourse()) {
+    <app-course-detail
+      [course]="selectedCourse()"
+      (close)="onCloseCourseDetail()"
+      (actionTriggered)="onCourseActionTriggered($event)"
+    ></app-course-detail>
+  }
+
+  <!-- Add Course Modal -->
+  @if (showAddCourseModal()) {
+    <app-add-course-modal
+      (close)="showAddCourseModal.set(false)"
+      (courseAdded)="onCourseAdded()"
+    ></app-add-course-modal>
+  }
+
+  <!-- Toast Notification -->
+  @if (toastMessage()) {
+    <div class="toast-notification">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <span>{{ toastMessage() }}</span>
+    </div>
+  }
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div>© 2026 RapL Inc. — Micro-Learning & Performance Assessment Platform</div>
+      <div class="footer-links">
+        <a href="https://getrapl.com" target="_blank" rel="noopener">getrapl.com</a>
+        <span>•</span>
+        <a href="#">Privacy Policy</a>
+        <span>•</span>
+        <a href="#">Documentation</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
